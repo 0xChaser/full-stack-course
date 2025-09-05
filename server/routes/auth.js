@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-router.post("/auth/register/", async (req, res) => {
+router.post("/register/", async (req, res) => {
   try {
     const existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
@@ -33,15 +33,15 @@ router.post("/auth/register/", async (req, res) => {
       user: userResponse
     });
 
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.error(error.message);
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   }
 });
 
-router.post("/auth/login/", async (req, res) => {
+router.post("/login/", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -80,13 +80,13 @@ router.post("/auth/login/", async (req, res) => {
       message: "Login successful",
       token: token,
       user: userResponse,
-      expiresIn: "7d"
+      expiresIn: "24h"
     });
 
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.log(error.message);
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   }
 });
@@ -128,4 +128,5 @@ const requireAuth = async (req, res, next) => {
   }
 };
 
-module.exports = { router, requireAuth };
+router.requireAuth = requireAuth;
+module.exports = router;

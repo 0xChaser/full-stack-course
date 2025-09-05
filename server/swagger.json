@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Authentication API",
+    "title": "MyContacts API",
     "version": "1.0.0",
-    "description": "API for user authentication with JWT tokens"
+    "description": "API for user authentication with JWT tokens and contact management"
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
+      "url": "http://localhost:8080",
       "description": "Development server"
     }
   ],
@@ -15,6 +15,10 @@
     {
       "name": "Authentication",
       "description": "User authentication endpoints"
+    },
+    {
+      "name": "Contacts",
+      "description": "Contact management endpoints"
     }
   ],
   "paths": {
@@ -153,7 +157,7 @@
                     },
                     "expiresIn": {
                       "type": "string",
-                      "example": "7d"
+                      "example": "24h"
                     }
                   }
                 }
@@ -169,6 +173,396 @@
                 },
                 "example": {
                   "message": "Invalid email or password"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact/": {
+      "post": {
+        "summary": "Create a new contact",
+        "tags": ["Contacts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contact added successfully"
+                    },
+                    "contact": {
+                      "$ref": "#/components/schemas/ContactResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contact with this lastname already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "Contact with this lastname already exists"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all contacts for the authenticated user",
+        "tags": ["Contacts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contacts retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contacts retrieved successfully"
+                    },
+                    "contacts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ContactListItem"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "example": 10
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact/{id}": {
+      "get": {
+        "summary": "Get a specific contact by ID",
+        "tags": ["Contacts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contact retrieved successfully"
+                    },
+                    "contact": {
+                      "$ref": "#/components/schemas/ContactListItem"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "Contact not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a contact",
+        "tags": ["Contacts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Contact updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contact updated successfully"
+                    },
+                    "contact": {
+                      "$ref": "#/components/schemas/ContactListItem"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contact with this lastname already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "Contact with this lastname already exists"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "Contact not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a contact",
+        "tags": ["Contacts"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The contact ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contact deleted successfully"
+                    },
+                    "deletedContact": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "message": "Contact not found"
                 }
               }
             }
@@ -230,6 +624,130 @@
           "email": "user@example.com"
         }
       },
+      "ContactInput": {
+        "type": "object",
+        "required": ["email", "firstName", "lastName", "phone"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Contact's email address"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Contact's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Contact's last name (must be unique per user)"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact's phone number"
+          }
+        },
+        "example": {
+          "email": "john.doe@example.com",
+          "firstName": "John",
+          "lastName": "Doe",
+          "phone": "+1234567890"
+        }
+      },
+      "ContactUpdateInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Contact's email address"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Contact's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Contact's last name (must be unique per user)"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact's phone number"
+          }
+        },
+        "example": {
+          "email": "john.doe@newmail.com",
+          "phone": "+0987654321"
+        }
+      },
+      "ContactResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Contact's ID"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact's email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Contact's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Contact's last name"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact's phone number"
+          },
+          "user_id": {
+            "type": "string",
+            "description": "ID of the user who owns this contact"
+          }
+        },
+        "example": {
+          "id": "507f1f77bcf86cd799439012",
+          "email": "john.doe@example.com",
+          "firstName": "John",
+          "lastName": "Doe",
+          "phone": "+1234567890",
+          "user_id": "507f1f77bcf86cd799439011"
+        }
+      },
+      "ContactListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Contact's ID"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact's email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Contact's first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Contact's last name"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Contact's phone number"
+          }
+        },
+        "example": {
+          "id": "507f1f77bcf86cd799439012",
+          "email": "john.doe@example.com",
+          "firstName": "John",
+          "lastName": "Doe",
+          "phone": "+1234567890"
+        }
+      },
       "ErrorResponse": {
         "type": "object",
         "properties": {
@@ -247,7 +765,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
       }
     }
   }

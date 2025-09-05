@@ -7,15 +7,21 @@ const Contact = new mongoose.Schema({
   },
   firstName: {
     type: String,
-    require: true
+    required: true
   },
   lastName: {
     type: String,
-    require: true
+    required: true,
+    unique: true
+  },
+  phone: {
+    type: Number,
+    required: true
   },
   user_id: {
     type: String,
-  }
+    required: true
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Contact', Contact);
