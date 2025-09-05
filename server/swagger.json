@@ -3,12 +3,12 @@
   "info": {
     "title": "MyContacts API",
     "version": "1.0.0",
-    "description": "API for user authentication with JWT tokens and contact management"
+    "description": "API for MyContacts"
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
-      "description": "Development server"
+      "url": "https://full-js.flo-isk.fr",
+      "description": "Production server"
     }
   ],
   "tags": [
