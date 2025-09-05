@@ -50,10 +50,10 @@ services:
       - traefik-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ct-front.rule=Host(`full-js.flo-isk.fr`) && PathPrefix(`/`)"
-      - "traefik.http.routers.ct-front.entrypoints=websecure"
-      - "traefik.http.routers.ct-front.tls=true"
-      - "traefik.http.routers.ct-front.tls.certresolver=myresolver"
+      - "traefik.http.routers.full_js_back.rule=Host(`full-js.flo-isk.fr`) && PathPrefix(`/`)"
+      - "traefik.http.routers.full_js_back.entrypoints=websecure"
+      - "traefik.http.routers.full_js_back.tls=true"
+      - "traefik.http.routers.full_js_back.tls.certresolver=myresolver"
       - "traefik.docker.network=traefik-net"
     restart: always
     profiles:
