@@ -30,6 +30,8 @@ services:
       - "27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - traefik-net
     profiles:
       - prod
 
@@ -44,7 +46,7 @@ services:
     volumes:
       - ./server:/app
     depends_on:
-      - mongo
+      - mongo_prod
     command: sh -c "npm install && npm start"
     networks:
       - traefik-net
