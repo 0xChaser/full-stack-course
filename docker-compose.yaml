@@ -5,6 +5,8 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    profiles:
+      - dev
 
   server:
     build: ./server
@@ -19,6 +21,43 @@ services:
     depends_on:
       - mongo
     command: sh -c "npm install && npm start"
+    profiles:
+      - dev
+
+  mongo_prod:
+    image: mongo
+    expose:
+      - "27017"
+    volumes:
+      - mongo_data:/data/db
+    profiles:
+      - prod
+
+  server_prod:
+    build: ./server
+    expose:
+      - "8080"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+    env_file:
+      - .env
+    volumes:
+      - ./server:/app
+    depends_on:
+      - mongo
+    command: sh -c "npm install && npm start"
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ct-front.rule=Host(`full-js.flo-isk.fr`) && PathPrefix(`/`)"
+      - "traefik.http.routers.ct-front.entrypoints=websecure"
+      - "traefik.http.routers.ct-front.tls=true"
+      - "traefik.http.routers.ct-front.tls.certresolver=myresolver"
+      - "traefik.docker.network=traefik-net"
+    restart: always
+    profiles:
+      - prod
 
 volumes:
   mongo_data:
