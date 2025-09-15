@@ -27,6 +27,7 @@ const requireAuth = async (req, res, next) => {
       email: decoded.email
     };
 
+    next();
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({
