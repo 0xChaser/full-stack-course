@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://full-js.flo-isk.fr",
+      "url": "https://full-js-api.flo-isk.fr",
       "description": "Production server"
     }
   ],

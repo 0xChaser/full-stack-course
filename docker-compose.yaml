@@ -52,10 +52,29 @@ services:
       - traefik-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.full_js_back.rule=Host(`full-js.flo-isk.fr`) && PathPrefix(`/`)"
+      - "traefik.http.routers.full_js_back.rule=Host(`full-js-api.flo-isk.fr`) && PathPrefix(`/`)"
       - "traefik.http.routers.full_js_back.entrypoints=websecure"
       - "traefik.http.routers.full_js_back.tls=true"
       - "traefik.http.routers.full_js_back.tls.certresolver=myresolver"
+      - "traefik.docker.network=traefik-net"
+    restart: always
+    profiles:
+      - prod
+
+  client_prod:
+    build: ./client
+    expose:
+      - "80"
+    depends_on:
+      - server_prod
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.full_js_front.rule=Host(`full-js.flo-isk.fr`)"
+      - "traefik.http.routers.full_js_front.entrypoints=websecure"
+      - "traefik.http.routers.full_js_front.tls=true"
+      - "traefik.http.routers.full_js_front.tls.certresolver=myresolver"
       - "traefik.docker.network=traefik-net"
     restart: always
     profiles:
