@@ -1,5 +1,6 @@
 services:
   mongo:
+    container_name: "mongo_dev"
     image: mongo
     ports:
       - "27017:27017"
@@ -8,21 +9,21 @@ services:
     profiles:
       - dev
 
-  server:
-    build: ./server
-    ports:
-      - "8080:8080"
-    environment:
-      - MONGO_URI=${MONGO_URI}
-    env_file:
-      - .env
-    volumes:
-      - ./server:/app
-    depends_on:
-      - mongo
-    command: sh -c "npm install && npm start"
-    profiles:
-      - dev
+  # server:
+  #   build: ./server
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - MONGO_URI=${MONGO_URI}
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./server:/app
+  #   depends_on:
+  #     - mongo
+  #   command: sh -c "npm install && npm start"
+  #   profiles:
+  #     - dev
 
   mongo_prod:
     image: mongo
