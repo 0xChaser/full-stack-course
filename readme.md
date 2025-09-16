@@ -459,31 +459,11 @@ cd server && npm start
 
 # Tests avec debug
 cd server && npm run test:verbose
+
+# Tests avec coverage
+cd server && npm run test:coverage
 ```
 
-## 📈 Améliorations Futures
-
-- [ ] Pagination pour les contacts
-- [ ] Recherche et filtrage des contacts
-- [ ] Upload d'images de profil
-- [ ] Export/Import des contacts (CSV, JSON)
-- [ ] Notifications en temps réel
-- [ ] Mode sombre
-- [ ] Tests E2E avec Cypress
-- [ ] CI/CD avec GitHub Actions
-- [ ] Monitoring avec Prometheus/Grafana
-
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-## 📝 Licence
-
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ## 👤 Auteur
 
@@ -491,4 +471,4 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 
 ---
 
-*Développé avec ❤️ en utilisant React, Node.js et MongoDB*
+*Développé en utilisant React, Node.js et MongoDB*
