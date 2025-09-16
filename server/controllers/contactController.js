@@ -118,16 +118,16 @@ const updateContact = async (req, res) => {
       });
     }
 
-    if (req.body.lastName && req.body.lastName !== existingContact.lastName) {
+    if (req.body.phone && req.body.phone !== existingContact.phone) {
       const duplicateContact = await Contact.findOne({
-        lastName: req.body.lastName,
+        phone: req.body.phone,
         user_id: req.user.user_id,
         _id: { $ne: contactId }
       });
 
       if (duplicateContact) {
         return res.status(400).json({
-          message: "Contact with this lastname already exists"
+          message: "Contact with this this phone number already exists"
         });
       }
     }
