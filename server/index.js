@@ -10,9 +10,6 @@ const swaggerDocument = require('./swagger.json');
 const AuthRouter = require("./routes/auth");
 const ContactRouter = require("./routes/contact");
 
-console.log("AuthRouter:", typeof AuthRouter);
-console.log("ContactRouter:", typeof ContactRouter); 
-
 app.use(express.json())
 app.use(cors());
 
