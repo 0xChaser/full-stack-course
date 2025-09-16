@@ -467,7 +467,7 @@ cd server && npm run test:coverage
 
 ## 👤 Auteur
 
-**Chaser** - Développeur Full-Stack
+**0xChaser** - Développeur Full-Stack
 
 ---
 
