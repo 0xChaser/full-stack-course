@@ -3,13 +3,13 @@ const Contact = require("../models/contact");
 const createContact = async (req, res) => {
   try {
     const existingContact = await Contact.findOne({
-      lastName: req.body.lastName,
+      phone: req.body.phone,
       user_id: req.user.user_id
     });
     
     if (existingContact) {
       return res.status(400).json({
-        message: "Contact with this lastname already exists"
+        message: "Contact with this phone already exists"
       });
     }
     
@@ -127,7 +127,7 @@ const updateContact = async (req, res) => {
 
       if (duplicateContact) {
         return res.status(400).json({
-          message: "Contact with this this phone number already exists"
+          message: "Contact with this phone already exists"
         });
       }
     }

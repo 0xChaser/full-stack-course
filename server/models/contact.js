@@ -12,11 +12,10 @@ const Contact = new mongoose.Schema({
   lastName: {
     type: String,
     required: true,
-    unique: true
   },
   phone: {
     type: String,
-    required: true
+    required: true,
   },
   user_id: {
     type: String,

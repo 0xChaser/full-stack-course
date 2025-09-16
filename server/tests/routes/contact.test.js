@@ -64,7 +64,7 @@ describe('Contact Routes', () => {
       expect(response.body.contact).toHaveProperty('email', contactData.email);
       expect(response.body.contact).toHaveProperty('firstName', contactData.firstName);
       expect(response.body.contact).toHaveProperty('lastName', contactData.lastName);
-      expect(response.body.contact).toHaveProperty('phone', contactData.phone);
+      expect(response.body.contact).toHaveProperty('phone', contactData.phone.toString());
       expect(response.body.contact).toHaveProperty('user_id', userId);
 
       const savedContact = await Contact.findOne({ 
@@ -75,26 +75,6 @@ describe('Contact Routes', () => {
       expect(savedContact.email).toBe(contactData.email);
     });
 
-    it('should return error for duplicate lastName for same user', async () => {
-      const existingContact = await createTestContact(userId, {
-        lastName: 'DuplicateLastName'
-      });
-
-      const contactData = {
-        email: 'new@example.com',
-        firstName: 'Jane',
-        lastName: existingContact.lastName,
-        phone: 9876543210
-      };
-
-      const response = await request(app)
-        .post('/contact')
-        .set(authHeaders)
-        .send(contactData)
-        .expect(400);
-
-      expect(response.body).toHaveProperty('message', 'Contact with this lastname already exists');
-    });
 
     it('should return error for missing required fields', async () => {
       const incompleteData = {
@@ -307,25 +287,6 @@ describe('Contact Routes', () => {
       expect(response.body).toHaveProperty('message', 'Contact not found');
     });
 
-    it('should return error when updating lastName to existing one', async () => {
-      const otherContact = await createTestContact(userId, {
-        email: 'other@example.com',
-        lastName: 'ExistingLastName'
-      });
-
-      const contactId = testContact._id.toString();
-      const updateData = {
-        lastName: 'ExistingLastName'
-      };
-
-      const response = await request(app)
-        .patch(`/contact/${contactId}`)
-        .set(authHeaders)
-        .send(updateData)
-        .expect(400);
-
-      expect(response.body).toHaveProperty('message', 'Contact with this lastname already exists');
-    });
 
     it('should allow updating lastName to non-existing one', async () => {
       const contactId = testContact._id.toString();

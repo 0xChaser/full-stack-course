@@ -16,7 +16,7 @@ describe('Contact Model', () => {
         email: 'contact@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -37,7 +37,7 @@ describe('Contact Model', () => {
       const contactData = {
         firstName: 'John',
         lastName: 'Doe',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -50,7 +50,7 @@ describe('Contact Model', () => {
       const contactData = {
         email: 'contact@example.com',
         lastName: 'Doe',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -63,7 +63,7 @@ describe('Contact Model', () => {
       const contactData = {
         email: 'contact@example.com',
         firstName: 'John',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -90,7 +90,7 @@ describe('Contact Model', () => {
         email: 'contact@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        phone: 1234567890
+        phone: "1234567890"
       };
 
       const contact = new Contact(contactData);
@@ -98,27 +98,6 @@ describe('Contact Model', () => {
       await expect(contact.save()).rejects.toThrow();
     });
 
-    it('should not create contacts with duplicate lastName for same user', async () => {
-      const contactData = {
-        email: 'contact1@example.com',
-        firstName: 'John',
-        lastName: 'Duplicate',
-        phone: 1234567890,
-        user_id: userId
-      };
-
-      const contact1 = new Contact(contactData);
-      await contact1.save();
-
-      const contact2Data = {
-        ...contactData,
-        email: 'contact2@example.com',
-        firstName: 'Jane'
-      };
-      const contact2 = new Contact(contact2Data);
-      
-      await expect(contact2.save()).rejects.toThrow();
-    });
   });
 
   describe('Contact Validation', () => {
@@ -126,7 +105,7 @@ describe('Contact Model', () => {
       const contactData = {
         firstName: 'John',
         lastName: 'Doe',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -141,7 +120,7 @@ describe('Contact Model', () => {
       const contactData = {
         email: 'contact@example.com',
         lastName: 'Doe',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -156,7 +135,7 @@ describe('Contact Model', () => {
       const contactData = {
         email: 'contact@example.com',
         firstName: 'John',
-        phone: 1234567890,
+        phone: "1234567890",
         user_id: userId
       };
 
@@ -178,7 +157,8 @@ describe('Contact Model', () => {
       const contact = new Contact(contactData);
       const validationError = contact.validateSync();
       
-      expect(validationError)
+      expect(validationError.errors.phone).toBeDefined();
+      expect(validationError.errors.phone.message).toContain('required');
     });
 
     it('should require user_id field', async () => {
@@ -186,7 +166,7 @@ describe('Contact Model', () => {
         email: 'contact@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        phone: 1234567890
+        phone: "1234567890"
       };
 
       const contact = new Contact(contactData);
@@ -196,18 +176,19 @@ describe('Contact Model', () => {
       expect(validationError.errors.user_id.message).toContain('required');
     });
 
-    it('should validate phone as number', async () => {
+    it('should accept any string value for phone', async () => {
       const contactData = {
         email: 'contact@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        phone: 'invalid-phone',
+        phone: 'any-phone-string',
         user_id: userId
       };
 
       const contact = new Contact(contactData);
+      const savedContact = await contact.save();
       
-      await expect(contact.save()).rejects.toThrow();
+      expect(savedContact.phone).toBe('any-phone-string');
     });
   });
 
