@@ -10,7 +10,6 @@ const swaggerDocument = require('./swagger.json');
 const AuthRouter = require("./routes/auth");
 const ContactRouter = require("./routes/contact");
 
-
 const corsOptions = {
   origin: [
     'https://full-js.flo-isk.fr',

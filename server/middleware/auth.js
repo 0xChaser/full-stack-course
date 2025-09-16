@@ -13,6 +13,12 @@ const requireAuth = async (req, res, next) => {
 
     const token = authHeader.substring(7);
 
+    if (!token || token.trim() === '') {
+      return res.status(401).json({
+        message: "Unauthorized"
+      });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     const user = await User.findById(decoded.user_id);
