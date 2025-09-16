@@ -45,7 +45,7 @@ export default function ContactsTable() {
 
   const handleSubmit = async (data) => {
     if (editingContact) {
-      await contactService.updateContact(editingContact._id, data);
+      await contactService.updateContact(editingContact.id, data);
     } else {
       await contactService.addContact(data);
     }
