@@ -17,7 +17,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/auth", AuthRouter);
 app.use("/contact", ContactRouter); 
 
-mongoose.connect("mongodb://localhost:27017/mycontacts")
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(8080, () => {
