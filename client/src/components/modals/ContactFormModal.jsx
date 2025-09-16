@@ -8,6 +8,8 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, initialDat
     lastName: "",
     phone: ""
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (initialData) {
@@ -32,10 +34,19 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, initialDat
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
-    onClose();
+    setSubmitting(true);
+    setErrorMessage("");
+    try {
+      await onSubmit(formData);
+      onClose();
+    } catch (err) {
+      const message = err?.message || err?.error || err?.errors?.[0]?.msg || "Une erreur est survenue";
+      setErrorMessage(message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -45,6 +56,11 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, initialDat
       title={initialData ? "Modifier un contact" : "Ajouter un contact"}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
+        {errorMessage && (
+          <div className="p-2 text-sm text-red-700 bg-red-100 border border-red-200 rounded">
+            {errorMessage}
+          </div>
+        )}
         <input
           type="email"
           name="email"
@@ -94,9 +110,10 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, initialDat
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            disabled={submitting}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
-            {initialData ? "Modifier" : "Ajouter"}
+            {submitting ? "Veuillez patienter..." : (initialData ? "Modifier" : "Ajouter")}
           </button>
         </div>
       </form>

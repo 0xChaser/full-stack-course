@@ -44,12 +44,16 @@ export default function ContactsTable() {
   };
 
   const handleSubmit = async (data) => {
-    if (editingContact) {
-      await contactService.updateContact(editingContact.id, data);
-    } else {
-      await contactService.addContact(data);
+    try {
+      if (editingContact) {
+        await contactService.updateContact(editingContact.id, data);
+      } else {
+        await contactService.addContact(data);
+      }
+      await fetchContacts();
+    } catch (error) {
+      throw error;
     }
-    await fetchContacts();
   };
 
   if (loading) return <p>Chargement...</p>;

@@ -234,14 +234,14 @@
             }
           },
           "400": {
-            "description": "Contact with this lastname already exists",
+            "description": "Contact with this phone number already exists",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "message": "Contact with this lastname already exists"
+                  "message": "Contact with this phone number already exists"
                 }
               }
             }
@@ -451,14 +451,14 @@
             }
           },
           "400": {
-            "description": "Contact with this lastname already exists",
+            "description": "Contact with this phone number already exists",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "message": "Contact with this lastname already exists"
+                  "message": "Contact with this phone number already exists"
                 }
               }
             }

@@ -4,28 +4,48 @@ const CONTACT_ENDPOINT = "/contact";
 
 const ContactService = {
   getAllContacts: async () => {
-    const response = await apiClient.get(CONTACT_ENDPOINT);
-    return response.data;
+    try {
+      const response = await apiClient.get(CONTACT_ENDPOINT);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Erreur lors de la récupération des contacts' };
+    }
   },
 
   getContactById: async (id) => {
-    const response = await apiClient.get(`${CONTACT_ENDPOINT}/${id}`);
-    return response.data;
+    try {
+      const response = await apiClient.get(`${CONTACT_ENDPOINT}/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Erreur lors de la récupération du contact' };
+    }
   },
 
   addContact: async (contactData) => {
-    const response = await apiClient.post(CONTACT_ENDPOINT, contactData);
-    return response.data;
+    try {
+      const response = await apiClient.post(CONTACT_ENDPOINT, contactData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Erreur lors de la création du contact' };
+    }
   },
 
   updateContact: async (id, updatedData) => {
-    const response = await apiClient.patch(`${CONTACT_ENDPOINT}/${id}`, updatedData);
-    return response.data;
+    try {
+      const response = await apiClient.patch(`${CONTACT_ENDPOINT}/${id}`, updatedData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Erreur lors de la mise à jour du contact' };
+    }
   },
 
   deleteContact: async (id) => {
-    const response = await apiClient.delete(`${CONTACT_ENDPOINT}/${id}`);
-    return response.data;
+    try {
+      const response = await apiClient.delete(`${CONTACT_ENDPOINT}/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Erreur lors de la suppression du contact' };
+    }
   },
 };
 
