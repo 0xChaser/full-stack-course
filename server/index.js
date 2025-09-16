@@ -10,11 +10,16 @@ const swaggerDocument = require('./swagger.json');
 const AuthRouter = require("./routes/auth");
 const ContactRouter = require("./routes/contact");
 
-console.log("AuthRouter:", typeof AuthRouter);
-console.log("ContactRouter:", typeof ContactRouter); 
+
+const corsOptions = {
+  origin: [
+    'https://full-js.flo-isk.fr',
+    'http://localhost:8080'
+  ],
+};
 
 app.use(express.json())
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/auth", AuthRouter);
