@@ -37,7 +37,9 @@ const Register = () => {
     try {
       await AuthService.register(formData.email, formData.password);
       await AuthService.login(formData.email, formData.password)
-      navigate("/homepage")
+      if(AuthService.isAuthenticated()){
+        navigate("/homepage")
+      }
     } catch (error) {
       setError(error.message || 'Erreur lors de l\'inscription');
     } finally {

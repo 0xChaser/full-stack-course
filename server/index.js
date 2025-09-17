@@ -13,7 +13,7 @@ const ContactRouter = require("./routes/contact");
 const corsOptions = {
   origin: [
     'https://full-js.flo-isk.fr',
-    'http://localhost:8080'
+    'http://localhost:3000'
   ],
 };
 
